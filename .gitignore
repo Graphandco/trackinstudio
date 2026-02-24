@@ -1,0 +1,14 @@
+# Ignorer tout par défaut
+/*
+!.gitignore
+
+# modules : dossiers trackinstudio* et tous leurs sous-dossiers
+/modules/*
+!/modules/trackinstudio*
+!/modules/trackinstudio*/
+
+# themes : trackinstudio et tous ses sous-dossiers
+/themes/*
+!/themes/trackinstudio
+!/themes/trackinstudio/
+!/themes/trackinstudio/**

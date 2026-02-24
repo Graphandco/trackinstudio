@@ -2,6 +2,10 @@
 /*
 !.gitignore
 
+# Débloquer les fichiers Docker
+!docker-compose.yml
+!Dockerfile
+
 # Débloquer modules/ et themes/ pour pouvoir les parcourir
 !modules/
 !themes/
@@ -15,3 +19,5 @@
 /themes/*
 !/themes/trackinstudio
 !/themes/trackinstudio/*
+
+node_modules/

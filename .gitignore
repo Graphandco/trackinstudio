@@ -2,13 +2,16 @@
 /*
 !.gitignore
 
-# modules : dossiers trackinstudio* et tous leurs sous-dossiers
+# Débloquer modules/ et themes/ pour pouvoir les parcourir
+!modules/
+!themes/
+
+# modules : tout ignorer sauf trackinstudio*
 /modules/*
 !/modules/trackinstudio*
-!/modules/trackinstudio*/
+!/modules/trackinstudio*/*
 
-# themes : trackinstudio et tous ses sous-dossiers
+# themes : tout ignorer sauf trackinstudio
 /themes/*
 !/themes/trackinstudio
-!/themes/trackinstudio/
-!/themes/trackinstudio/**
+!/themes/trackinstudio/*

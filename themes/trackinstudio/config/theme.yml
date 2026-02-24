@@ -1,0 +1,10 @@
+parent: hummingbird
+name: trackinstudio
+display_name: "TrackStudio"
+version: 1.0.0
+author:
+   name: "Graph and Co"
+   url: "https://www.graphandco.com"
+
+assets:
+   use_parent_assets: true

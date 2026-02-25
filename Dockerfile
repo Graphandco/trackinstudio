@@ -37,4 +37,4 @@ RUN if [ "$APP_ENV" = "dev" ]; then \
 
 # Fix des droits pour les dossiers qui seront montés en volumes
 # Docker préservera ces droits lors de la création des volumes nommés
-RUN chown -R www-data:www-data /var/www/htmls
+RUN chown -R www-data:www-data /var/www/html

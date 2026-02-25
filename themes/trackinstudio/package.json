@@ -1,0 +1,12 @@
+{
+  "name": "trackinstudio-theme",
+  "private": true,
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0",
+    "vite": "^5.0.0"
+  }
+}

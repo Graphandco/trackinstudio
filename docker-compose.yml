@@ -18,7 +18,7 @@ services:
          PS_LANGUAGE: fr
          PS_ENABLE_SSL: 1
          PS_DEV_MODE: ${PS_DEV_MODE}
-         PS_TRUSTED_PROXIES: 172.18.0.0/16
+         PS_TRUSTED_PROXIES: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16172.18.0.0/16
 
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}

@@ -29,10 +29,6 @@ services:
       volumes:
          # Médias uploadés (images produits, catégories...)
          - prestashop_img:/var/www/html/img
-         # Cache, logs, sessions
-         - prestashop_var:/var/www/html/var
-         # Configuration PrestaShop (parameters.php, settings.inc.php...)
-         - prestashop_config:/var/www/html/config
          # Fichiers téléchargeables (produits virtuels)
          - prestashop_download:/var/www/html/download
          # Fichiers uploadés via le back-office
@@ -45,8 +41,6 @@ services:
 
 volumes:
    prestashop_img:
-   prestashop_var:
-   prestashop_config:
    prestashop_download:
    prestashop_upload:
 

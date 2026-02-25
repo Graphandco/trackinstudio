@@ -36,6 +36,8 @@ services:
          - prestashop_download:/var/www/html/download
          # Fichiers uploadés via le back-office
          - prestashop_upload:/var/www/html/upload
+         # Fichier de configuration
+         - ./parameters.php:/var/www/html/app/config/parameters.php
 
       networks:
          - web-network

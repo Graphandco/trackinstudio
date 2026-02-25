@@ -2,8 +2,6 @@ services:
    trackinstudio-prestashop:
       build:
          context: .
-         args:
-            APP_ENV: ${APP_ENV}
       container_name: trackinstudio-prestashop
       restart: unless-stopped
       env_file:
@@ -11,33 +9,25 @@ services:
       environment:
          PS_DOMAIN: ${PS_DOMAIN}
          PS_HANDLE_DYNAMIC_DOMAIN: 0
-         # PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
-         PS_INSTALL_AUTO: 0
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_INSTALL_AUTO: 1
+         PS_ERASE_DB: 0
          PS_COUNTRY: fr
          PS_LANGUAGE: fr
          PS_ENABLE_SSL: 1
-         # PS_DEV_MODE: ${PS_DEV_MODE}
          PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
-
-         PS_DEV_MODE: "1"
-         APP_ENV: "dev"
-         SYMFONY_ENV: "dev"
-
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
          DB_PASSWD: ${DB_PASSWD}
          DB_PREFIX: ps_
+         ADMIN_MAIL: ${ADMIN_MAIL}
+         ADMIN_PASSWD: ${ADMIN_PASSWD}
 
       volumes:
-         # Médias uploadés (images produits, catégories...)
          - prestashop_img:/var/www/html/img
-         # Fichiers téléchargeables (produits virtuels)
          - prestashop_download:/var/www/html/download
-         # Fichiers uploadés via le back-office
          - prestashop_upload:/var/www/html/upload
-         # Fichier de configuration
-         - ./parameters.php:/var/www/html/app/config/parameters.php
 
       networks:
          - web-network

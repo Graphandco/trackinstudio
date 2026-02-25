@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:9.0.3
+FROM prestashop/prestashop:8.2.4
 
 # PHP tuning commun
 RUN { \
@@ -35,9 +35,5 @@ RUN if [ "$APP_ENV" = "dev" ]; then \
     echo "opcache.save_comments=1" >> /usr/local/etc/php/conf.d/10-opcache.ini; \
   fi
 
-# Fix des droits pour les dossiers qui seront montés en volumes
-# Docker préservera ces droits lors de la création des volumes nommés
+# Fix des droits
 RUN chown -R www-data:www-data /var/www/html
-
-# Suppression du dossier install (sécurité)
-RUN rm -rf /var/www/html/install

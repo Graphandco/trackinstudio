@@ -1,51 +1,54 @@
 services:
-  trackinstudio-prestashop:
-    build:
-      context: .
-      args:
-        APP_ENV: ${APP_ENV}
-    container_name: trackinstudio-prestashop
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      PS_DOMAIN: ${PS_DOMAIN}
-      PS_HANDLE_DYNAMIC_DOMAIN: 0
-      PS_FOLDER_INSTALL: install
-      PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
-      PS_INSTALL_AUTO: 1
-      PS_COUNTRY: fr
-      PS_LANGUAGE: fr
-      PS_ENABLE_SSL: 1
+   trackinstudio-prestashop:
+      build:
+         context: .
+         args:
+            APP_ENV: ${APP_ENV}
+      container_name: trackinstudio-prestashop
+      restart: unless-stopped
+      env_file:
+         - .env
+      environment:
+         PS_DOMAIN: ${PS_DOMAIN}
+         PS_HANDLE_DYNAMIC_DOMAIN: 0
+         PS_FOLDER_INSTALL: install
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_INSTALL_AUTO: 1
+         PS_COUNTRY: fr
+         PS_LANGUAGE: fr
+         PS_ENABLE_SSL: 1
+         PS_DEV_MODE: ${PS_DEV_MODE}
 
-      DB_SERVER: ${DB_SERVER}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWD: ${DB_PASSWD}
-      DB_PREFIX: ps_
+         DB_SERVER: ${DB_SERVER}
+         DB_NAME: ${DB_NAME}
+         DB_USER: ${DB_USER}
+         DB_PASSWD: ${DB_PASSWD}
+         DB_PREFIX: ps_
 
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
+      volumes:
+         # Médias uploadés (images produits, catégories...)
+         - prestashop_img:/var/www/html/img
+         # Cache, logs, sessions
+         - prestashop_var:/var/www/html/var
+         # Configuration PrestaShop (parameters.php, settings.inc.php...)
+         - prestashop_config:/var/www/html/config
+         # Fichiers téléchargeables (produits virtuels)
+         - prestashop_download:/var/www/html/download
+         # Fichiers uploadés via le back-office
+         - prestashop_upload:/var/www/html/upload
 
-    volumes:
-      - ./:/var/www/html   # tout le projet à la racine
-    networks:
-      - web-network
-    depends_on:
-      - trackinstudio-redis
-    mem_limit: 4g
-    cpus: 2.0
+      networks:
+         - web-network
+      mem_limit: 4g
+      cpus: 2.0
 
-  trackinstudio-redis:
-    image: redis:7-alpine
-    container_name: trackinstudio-redis
-    restart: unless-stopped
-    env_file:
-      - .env
-    command: redis-server --maxmemory ${REDIS_MAXMEMORY} --maxmemory-policy allkeys-lru
-    networks:
-      - web-network
+volumes:
+   prestashop_img:
+   prestashop_var:
+   prestashop_config:
+   prestashop_download:
+   prestashop_upload:
 
 networks:
-  web-network:
-    external: true
+   web-network:
+      external: true

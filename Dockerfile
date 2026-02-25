@@ -34,3 +34,7 @@ RUN if [ "$APP_ENV" = "dev" ]; then \
     echo "opcache.fast_shutdown=1" >> /usr/local/etc/php/conf.d/10-opcache.ini && \
     echo "opcache.save_comments=1" >> /usr/local/etc/php/conf.d/10-opcache.ini; \
   fi
+
+# Fix des droits pour les dossiers qui seront montés en volumes
+# Docker préservera ces droits lors de la création des volumes nommés
+RUN chown -R www-data:www-data /var/www/htmls

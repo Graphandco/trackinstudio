@@ -1,49 +1,31 @@
 services:
-   trackinstudio-prestashop:
-      image: prestashop/prestashop:9.0.3-apache
-      container_name: trackinstudio-prestashop
+   prestashop:
+      container_name: trackinstudio
+      image: prestashop/prestashop:latest
       restart: unless-stopped
       env_file:
          - .env
       environment:
-         PS_DOMAIN: ${PS_DOMAIN}
-         PS_HANDLE_DYNAMIC_DOMAIN: 0
-         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
-         PS_INSTALL_AUTO: 0
-         PS_ERASE_DB: 0
-         PS_COUNTRY: fr
-         PS_LANGUAGE: fr
-         PS_ENABLE_SSL: 1
-         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
          DB_PASSWD: ${DB_PASSWD}
-         DB_PREFIX: ps_
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_LANGUAGE: ${PS_LANGUAGE}
+         PS_INSTALL_AUTO: ${PS_INSTALL_AUTO}
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
-
-      volumes:
-         - prestashop_img:/var/www/html/img
-         - prestashop_download:/var/www/html/download
-         - prestashop_upload:/var/www/html/upload
-         - type: bind
-           source: ./themes/trackinstudio
-           target: /var/www/html/themes/trackinstudio
-         - type: bind
-           source: ./modules/trackinstudio_module
-           target: /var/www/html/modules/trackinstudio_module
-
       networks:
          - web-network
-      mem_limit: 4g
-      cpus: 2.0
-
-volumes:
-   prestashop_img:
-   prestashop_download:
-   prestashop_upload:
-
+      volumes:
+         - type: bind
+           source: ./modules/trackinstudio_module # local path to the module
+           target: /var/www/html/modules/trackinstudio_module # path to be mounted in the container
+         - type: bind
+           source: ./themes/trackinstudio # local path to the theme
+           target: /var/www/html/themes/trackinstudio # path to be mounted in the container
+         - psdata:/var/www/html
 networks:
    web-network:
-      external: true
+volumes:
+   psdata:

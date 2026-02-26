@@ -14,6 +14,7 @@ services:
          PS_LANGUAGE: ${PS_LANGUAGE}
          PS_INSTALL_AUTO: ${PS_INSTALL_AUTO}
          PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16,172.18.0.0/18"
+         PS_DEV_MODE: 1
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
       networks:

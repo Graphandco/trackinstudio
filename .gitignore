@@ -1,5 +1,8 @@
 .DS_Store
 .env
 .env.dev
-docker-compose.dev.yml
-parameters.php
+
+
+docker-compose-presta8.yml
+Dockerfile
+Dockerfile-presta8

@@ -1,0 +1,32 @@
+/**
+ * TrackStudio - Surcharge du thème Hummingbird
+ * Compilé via Vite : npm run build
+ */
+
+@use "variables" as *;
+@use "product" as *;
+
+// Surcharge des variables CSS Bootstrap (priorité sur le thème parent)
+:root {
+   --bs-primary: var(--primary);
+   --bs-primary-rgb: #{$primary-rgb};
+   --bs-secondary: #{$secondary};
+   --bs-secondary-rgb: #{$secondary-rgb};
+   --bs-link-color: var(--primary);
+   --bs-link-hover-color: #{$accent};
+   --bs-link-decoration: none;
+   --bs-link-hover-decoration: underline;
+}
+
+// Overrides supplémentaires
+.btn-primary {
+   --bs-btn-bg: var(--primary);
+   --bs-btn-border-color: var(--primary);
+   --bs-btn-hover-bg: #{$accent};
+   --bs-btn-hover-border-color: #{$accent};
+}
+
+.nav-link.active,
+.navbar .nav-link:hover {
+   color: var(--primary) !important;
+}

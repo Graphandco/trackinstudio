@@ -1,7 +1,6 @@
 services:
    trackinstudio-prestashop:
-      build:
-         context: .
+      image: prestashop/prestashop:9.0.3-apache
       container_name: trackinstudio-prestashop
       restart: unless-stopped
       env_file:
@@ -28,6 +27,12 @@ services:
          - prestashop_img:/var/www/html/img
          - prestashop_download:/var/www/html/download
          - prestashop_upload:/var/www/html/upload
+         - type: bind
+           source: ./themes/trackinstudio
+           target: /var/www/html/themes/trackinstudio
+         - type: bind
+           source: ./modules/trackinstudio_module
+           target: /var/www/html/modules/trackinstudio_module
 
       networks:
          - web-network

@@ -13,6 +13,7 @@ services:
          PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
          PS_LANGUAGE: ${PS_LANGUAGE}
          PS_INSTALL_AUTO: ${PS_INSTALL_AUTO}
+         PS_TRUSTED_PROXIES: ${PS_TRUSTED_PROXIES}
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
       networks:

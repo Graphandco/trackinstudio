@@ -27,5 +27,6 @@ services:
          - psdata:/var/www/html
 networks:
    web-network:
+      external: true
 volumes:
    psdata:

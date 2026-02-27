@@ -1,10 +1,10 @@
 services:
-   trackinstudio-prestashop:
+   trackinstudio:
       build:
          context: .
          dockerfile: Dockerfile
 
-      container_name: trackinstudio-prestashop
+      container_name: trackinstudio
       restart: unless-stopped
       env_file:
          - .env

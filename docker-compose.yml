@@ -1,6 +1,4 @@
 name: trackinstudio
-version: 1.0.0
-
 services:
    trackinstudio:
       build:
@@ -41,11 +39,10 @@ services:
            target: /var/www/html/themes/trackinstudio
 
          # Volumes nommés : données persistantes "dans le container"
-         - prestashop_img:/var/www/html/img
-         - prestashop_download:/var/www/html/download
-         - prestashop_upload:/var/www/html/upload
-         - prestashop_config:/var/www/html/app/config
-         - prestashop_var:/var/www/html/var
+         - img:/var/www/html/img
+         - download:/var/www/html/download
+         - upload:/var/www/html/upload
+         - var:/var/www/html/var
 
       networks:
          - web-network
@@ -53,11 +50,10 @@ services:
       cpus: 2.0
 
 volumes:
-   prestashop_img:
-   prestashop_download:
-   prestashop_upload:
-   prestashop_config:
-   prestashop_var:
+   img:
+   download:
+   upload:
+   var:
 
 networks:
    web-network:

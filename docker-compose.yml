@@ -1,45 +1,28 @@
-services:
-   trackinstudio-prestashop:
-      build:
-         context: .
+ervices:
+   trackinstudio:
       container_name: trackinstudio
       restart: unless-stopped
       env_file:
          - .env
       environment:
-         PS_DOMAIN: ${PS_DOMAIN}
-         PS_HANDLE_DYNAMIC_DOMAIN: 0
-         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
-         PS_INSTALL_AUTO: 1
-         PS_ERASE_DB: 0
-         PS_COUNTRY: fr
-         PS_LANGUAGE: fr
-         PS_ENABLE_SSL: 1
-         PS_DEV_MODE: ${PS_DEV_MODE}
-         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
          DB_PASSWD: ${DB_PASSWD}
          DB_PREFIX: ps_
+         PS_DOMAIN: ${PS_DOMAIN}
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_INSTALL_AUTO: 1
+         PS_COUNTRY: fr
+         PS_LANGUAGE: fr
+         PS_ENABLE_SSL: 1
+         PS_DEV_MODE: ${PS_DEV_MODE}
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
-
       volumes:
-         - prestashop_img:/var/www/html/img
-         - prestashop_download:/var/www/html/download
-         - prestashop_upload:/var/www/html/upload
-
+         - ./:/var/www/html # tout le projet à la racine
       networks:
          - web-network
-      mem_limit: 4g
-      cpus: 2.0
-
-volumes:
-   prestashop_img:
-   prestashop_download:
-   prestashop_upload:
-
 networks:
    web-network:
       external: true

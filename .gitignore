@@ -3,6 +3,6 @@
 .env.dev
 
 
-docker-compose-presta8.yml
+docker-compose-build-mode.yml
 # Dockerfile
 Dockerfile-presta8

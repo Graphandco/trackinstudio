@@ -1,4 +1,4 @@
-ervices:
+services:
    trackinstudio:
       image: prestashop/prestashop:latest
       container_name: trackinstudio
@@ -22,9 +22,25 @@ ervices:
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
       volumes:
-         - ./:/var/www/html # tout le projet à la racine
+         - type: bind
+           source: ./modules/trackinstudio_module # local path to the module
+           target: /var/www/html/modules/trackinstudio_module # path to be mounted in the container
+         - type: bind
+           source: ./themes/trackinstudio # local path to the theme
+           target: /var/www/html/themes/trackinstudio # path to be mounted in the container
+         - type: bind
+           source: ./config # local path to the config
+           target: /var/www/html/config # path to be mounted in the container
+         - type: bind
+           source: ./var # local path to the var
+           target: /var/www/html/var # path to be mounted in the container
       networks:
          - web-network
 networks:
    web-network:
       external: true
+volumes:
+   trackinstudio_modules:
+   trackinstudio_themes:
+   trackinstudio_config:
+   trackinstudio_var:

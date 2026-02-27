@@ -1,0 +1,34 @@
+services:
+   prestashop:
+      container_name: trackinstudio
+      image: prestashop/prestashop:latest
+      restart: unless-stopped
+      env_file:
+         - .env
+      environment:
+         DB_SERVER: ${DB_SERVER}
+         DB_NAME: ${DB_NAME}
+         DB_USER: ${DB_USER}
+         DB_PASSWD: ${DB_PASSWD}
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_LANGUAGE: ${PS_LANGUAGE}
+         PS_INSTALL_AUTO: ${PS_INSTALL_AUTO}
+         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
+         PS_DEV_MODE: ${PS_DEV_MODE}
+         ADMIN_MAIL: ${ADMIN_MAIL}
+         ADMIN_PASSWD: ${ADMIN_PASSWD}
+      networks:
+         - web-network
+      volumes:
+         - type: bind
+           source: ./modules/trackinstudio_module # local path to the module
+           target: /var/www/html/modules/trackinstudio_module # path to be mounted in the container
+         - type: bind
+           source: ./themes/trackinstudio # local path to the theme
+           target: /var/www/html/themes/trackinstudio # path to be mounted in the container
+         - psdata:/var/www/html
+networks:
+   web-network:
+      external: true
+volumes:
+   psdata:

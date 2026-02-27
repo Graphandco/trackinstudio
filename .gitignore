@@ -22,6 +22,7 @@
 /themes/trackinstudio/assets/cache
 /themes/trackinstudio/cache
 /themes/trackinstudio/src
+/themes/trackinstudio/node_modules
 /themes/trackinstudio/package*
 /themes/trackinstudio/vite.config.js
 

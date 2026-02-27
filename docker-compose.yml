@@ -2,7 +2,7 @@ services:
    trackinstudio-prestashop:
       build:
          context: .
-      container_name: trackinstudio-prestashop
+      container_name: trackinstudio
       restart: unless-stopped
       env_file:
          - .env

@@ -1,4 +1,4 @@
-ervices:
+services:
    trackinstudio:
       container_name: trackinstudio
       restart: unless-stopped

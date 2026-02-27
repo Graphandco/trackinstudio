@@ -1,8 +1,31 @@
-.DS_Store
+# Ignorer tout par défaut
+/*
+!.gitignore
+
+# Débloquer les fichiers Docker
+!docker-compose.yml
+!Dockerfile
+
+# Débloquer modules/ et themes/ pour pouvoir les parcourir
+!modules/
+!themes/
+
+# modules : tout ignorer sauf trackinstudio*
+/modules/*
+!/modules/trackinstudio*
+!/modules/trackinstudio*/*
+
+# themes : tout ignorer sauf trackinstudio
+/themes/*
+!/themes/trackinstudio
+!/themes/trackinstudio/*
+/themes/trackinstudio/assets/cache
+/themes/trackinstudio/cache
+/themes/trackinstudio/src
+/themes/trackinstudio/package*
+/themes/trackinstudio/vite.config.js
+
 .env
 .env.dev
 
-
-docker-compose-build-mode.yml
-# Dockerfile
-Dockerfile-presta8
+/node_modules/

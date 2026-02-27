@@ -1,46 +1,61 @@
 services:
-   trackinstudio:
-      image: prestashop/prestashop:latest
-      container_name: trackinstudio
+   trackinstudio-prestashop:
+      build:
+         context: .
+         dockerfile: Dockerfile
+
+      container_name: trackinstudio-prestashop
       restart: unless-stopped
       env_file:
          - .env
       environment:
+         PS_DOMAIN: ${PS_DOMAIN}
+         PS_HANDLE_DYNAMIC_DOMAIN: 0
+         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
+         PS_INSTALL_AUTO: 1
+         PS_ERASE_DB: 0
+         PS_COUNTRY: fr
+         PS_LANGUAGE: fr
+         PS_ENABLE_SSL: 1
+         PS_DEV_MODE: ${PS_DEV_MODE:-0}
+         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
+
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
          DB_PASSWD: ${DB_PASSWD}
          DB_PREFIX: ps_
-         PS_DOMAIN: ${PS_DOMAIN}
-         PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
-         PS_INSTALL_AUTO: 1
-         PS_COUNTRY: fr
-         PS_LANGUAGE: fr
-         PS_ENABLE_SSL: 1
-         PS_DEV_MODE: ${PS_DEV_MODE}
-         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
+
       volumes:
+         # Bind mounts : code custom (modifiable depuis l'hôte)
          - type: bind
-           source: ./modules/trackinstudio_module # local path to the module
-           target: /var/www/html/modules/trackinstudio_module # path to be mounted in the container
+           source: ./modules/trackinstudio_module
+           target: /var/www/html/modules/trackinstudio_module
          - type: bind
-           source: ./themes/trackinstudio # local path to the theme
-           target: /var/www/html/themes/trackinstudio # path to be mounted in the container
-         - type: bind
-           source: ./config # local path to the config
-           target: /var/www/html/config # path to be mounted in the container
-         - type: bind
-           source: ./var # local path to the var
-           target: /var/www/html/var # path to be mounted in the container
+           source: ./themes/trackinstudio
+           target: /var/www/html/themes/trackinstudio
+
+         # Volumes nommés : données persistantes "dans le container"
+         - prestashop_img:/var/www/html/img
+         - prestashop_download:/var/www/html/download
+         - prestashop_upload:/var/www/html/upload
+         - prestashop_config:/var/www/html/app/config
+         - prestashop_var:/var/www/html/var
+
       networks:
          - web-network
+      mem_limit: 4g
+      cpus: 2.0
+
+volumes:
+   prestashop_img:
+   prestashop_download:
+   prestashop_upload:
+   prestashop_config:
+   prestashop_var:
+
 networks:
    web-network:
       external: true
-volumes:
-   trackinstudio_modules:
-   trackinstudio_themes:
-   trackinstudio_config:
-   trackinstudio_var:

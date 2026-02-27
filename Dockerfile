@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:latest
+FROM prestashop/prestashop:8.2.4
 
 # PHP tuning commun
 RUN { \
@@ -36,4 +36,4 @@ RUN if [ "$APP_ENV" = "dev" ]; then \
   fi
 
 # Fix des droits
-# RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html

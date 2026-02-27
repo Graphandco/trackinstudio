@@ -35,5 +35,5 @@ RUN if [ "$APP_ENV" = "dev" ]; then \
     echo "opcache.save_comments=1" >> /usr/local/etc/php/conf.d/10-opcache.ini; \
   fi
 
-# Fix des droits
+# Fix des droits dossiers
 RUN chown -R www-data:www-data /var/www/html

@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:8.2.4
+FROM prestashop/prestashop:latest
 
 # PHP tuning commun
 RUN { \

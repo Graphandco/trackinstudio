@@ -1,6 +1,7 @@
 services:
    trackinstudio:
       container_name: trackinstudio
+      image: prestashop/prestashop:latest
       restart: unless-stopped
       env_file:
          - .env

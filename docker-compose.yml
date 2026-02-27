@@ -4,23 +4,18 @@ services:
       build:
          context: .
          dockerfile: Dockerfile
-
       container_name: trackinstudio
       restart: unless-stopped
       env_file:
          - .env
       environment:
          PS_DOMAIN: ${PS_DOMAIN}
-         PS_HANDLE_DYNAMIC_DOMAIN: 0
          PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
          PS_INSTALL_AUTO: 1
-         PS_ERASE_DB: 0
-         PS_COUNTRY: fr
          PS_LANGUAGE: fr
          PS_ENABLE_SSL: 1
          PS_DEV_MODE: ${PS_DEV_MODE:-0}
          PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
-
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
@@ -28,7 +23,6 @@ services:
          DB_PREFIX: ps_
          ADMIN_MAIL: ${ADMIN_MAIL}
          ADMIN_PASSWD: ${ADMIN_PASSWD}
-
       volumes:
          # Bind mounts : code custom (modifiable depuis l'hôte)
          - type: bind
@@ -37,23 +31,15 @@ services:
          - type: bind
            source: ./themes/trackinstudio
            target: /var/www/html/themes/trackinstudio
-
          # Volumes nommés : données persistantes "dans le container"
-         - img:/var/www/html/img
-         - download:/var/www/html/download
-         - upload:/var/www/html/upload
-         - var:/var/www/html/var
-
+         - psdata:/var/www/html
       networks:
          - web-network
       mem_limit: 4g
       cpus: 2.0
 
 volumes:
-   img:
-   download:
-   upload:
-   var:
+   psdata:
 
 networks:
    web-network:

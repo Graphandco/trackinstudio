@@ -13,9 +13,9 @@ services:
          PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN}
          PS_INSTALL_AUTO: 1
          PS_LANGUAGE: fr
-         PS_DEV_MODE: ${PS_DEV_MODE:-0}
+         PS_DEV_MODE: ${PS_DEV_MODE}
          PS_ENABLE_SSL: 0
-         PS_TRUSTED_PROXIES: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,172.18.0.0/16"
+         PS_TRUSTED_PROXIES: "private_ranges"
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}

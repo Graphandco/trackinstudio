@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:latest-fpm
+FROM prestashop/prestashop:latest
 
 # PHP tuning commun
 RUN { \

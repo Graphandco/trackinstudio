@@ -6,7 +6,7 @@
   <div class="cart-sidebar__backdrop" data-cart-sidebar-close></div>
   <div class="cart-sidebar__panel">
     <div class="cart-sidebar__header">
-      <h2 class="cart-sidebar__title">{l s='Your cart' d='Shop.Theme.Checkout'}</h2>
+      <h2 class="cart-sidebar__title">{l s='Votre panier' d='Shop.Theme.Checkout'}</h2>
       <button type="button" class="cart-sidebar__close" data-cart-sidebar-close aria-label="{l s='Close' d='Shop.Theme.Global'}">
         <i class="material-icons">close</i>
       </button>
@@ -16,6 +16,12 @@
         <p>{l s='Your cart is empty' d='Shop.Theme.Checkout'}</p>
       </div>
       <div class="cart-sidebar__products js-cart-sidebar-products" {if !isset($cart) || $cart.products_count == 0}style="display:none;"{/if}>
+        {if isset($cart) && $cart.products_count > 0}
+        <button type="button" class="btn btn-danger btn-sm cart-sidebar__empty-btn js-cart-empty-all" title="{l s='Vider le panier' d='Shop.Theme.Checkout'}">
+          <i class="material-icons">delete_sweep</i>
+          {l s='Vider le panier' d='Shop.Theme.Checkout'}
+        </button>
+        {/if}
         {if isset($cart.products) && is_array($cart.products) && $cart.products|@count > 0}
           {foreach from=$cart.products item=product}
             {assign var="imgUrl" value=$urls.no_picture_image.bySize.medium_default.url}
@@ -57,7 +63,7 @@
         <span class="cart-sidebar__total-value js-cart-sidebar-total">{if isset($cart.totals.total.value)}{$cart.totals.total.value}{elseif isset($cart.totals.total.amount)}{$cart.totals.total.amount}{else}{/if}</span>
       </div>
       <div class="cart-sidebar__actions">
-        <a href="{$urls.pages.cart}" class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">{l s='View cart' d='Shop.Theme.Checkout'}</a>
+        <a href="{$urls.pages.cart}" class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">{l s='Voir le panier' d='Shop.Theme.Checkout'}</a>
         <a href="{$urls.pages.order}" class="btn btn-primary cart-sidebar__btn-checkout js-cart-sidebar-btn-checkout">{l s='Proceed to checkout' d='Shop.Theme.Actions'}</a>
       </div>
     </div>

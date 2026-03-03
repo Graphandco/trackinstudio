@@ -1,0 +1,53 @@
+{
+  "src/fonts/Lexend-Black.ttf": {
+    "file": "assets/fonts/Lexend-Black-CmPnmhrJ.ttf",
+    "src": "src/fonts/Lexend-Black.ttf"
+  },
+  "src/fonts/Lexend-Bold.ttf": {
+    "file": "assets/fonts/Lexend-Bold-BHD1AiDd.ttf",
+    "src": "src/fonts/Lexend-Bold.ttf"
+  },
+  "src/fonts/Lexend-ExtraBold.ttf": {
+    "file": "assets/fonts/Lexend-ExtraBold-IeePgDw2.ttf",
+    "src": "src/fonts/Lexend-ExtraBold.ttf"
+  },
+  "src/fonts/Lexend-ExtraLight.ttf": {
+    "file": "assets/fonts/Lexend-ExtraLight-9KLIkcKL.ttf",
+    "src": "src/fonts/Lexend-ExtraLight.ttf"
+  },
+  "src/fonts/Lexend-Light.ttf": {
+    "file": "assets/fonts/Lexend-Light-CljLvlWl.ttf",
+    "src": "src/fonts/Lexend-Light.ttf"
+  },
+  "src/fonts/Lexend-Medium.ttf": {
+    "file": "assets/fonts/Lexend-Medium-B4Ng5Mcm.ttf",
+    "src": "src/fonts/Lexend-Medium.ttf"
+  },
+  "src/fonts/Lexend-Regular.ttf": {
+    "file": "assets/fonts/Lexend-Regular-peUU6jwM.ttf",
+    "src": "src/fonts/Lexend-Regular.ttf"
+  },
+  "src/fonts/Lexend-SemiBold.ttf": {
+    "file": "assets/fonts/Lexend-SemiBold-B1FI2Xqt.ttf",
+    "src": "src/fonts/Lexend-SemiBold.ttf"
+  },
+  "src/fonts/Lexend-Thin.ttf": {
+    "file": "assets/fonts/Lexend-Thin-D6gL-nCI.ttf",
+    "src": "src/fonts/Lexend-Thin.ttf"
+  },
+  "src/img/bg-home.webp": {
+    "file": "assets/img/bg-home-DFCMisje.webp",
+    "src": "src/img/bg-home.webp"
+  },
+  "src/js/main.js": {
+    "file": "assets/js/custom.js",
+    "name": "assets/js/custom",
+    "src": "src/js/main.js",
+    "isEntry": true
+  },
+  "src/scss/custom.scss": {
+    "file": "assets/css/custom.css",
+    "src": "src/scss/custom.scss",
+    "isEntry": true
+  }
+}

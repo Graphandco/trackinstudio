@@ -63,7 +63,7 @@
         <span class="cart-sidebar__total-value js-cart-sidebar-total">{if isset($cart.totals.total.value)}{$cart.totals.total.value}{elseif isset($cart.totals.total.amount)}{$cart.totals.total.amount}{else}{/if}</span>
       </div>
       <div class="cart-sidebar__actions">
-        <a href="{$urls.pages.cart}" class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">{l s='Voir le panier' d='Shop.Theme.Checkout'}</a>
+        <a href="{$link->getPageLink('cart', true, null, ['action' => 'show'])|escape:'html'}" class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">{l s='Voir le panier' d='Shop.Theme.Checkout'}</a>
         <a href="{$urls.pages.order}" class="btn btn-primary cart-sidebar__btn-checkout js-cart-sidebar-btn-checkout">{l s='Proceed to checkout' d='Shop.Theme.Actions'}</a>
       </div>
     </div>

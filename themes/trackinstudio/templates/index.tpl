@@ -12,10 +12,16 @@
   {block name='content_wrapper'}
     <div id="content-wrapper" class="wrapper__content">
       {hook h="displayContentWrapperTop"}
-      <h1>Hello World</h1>
+      
+      
 
       {block name='content'}
         <!-- TODO INSIDE -->
+          <section class="hero-home">
+            <div class="hero-home__content">
+
+            </div>
+          </section>
           {block name='page_header_container'}
             {block name='page_title' hide}
               <header class="page-header">

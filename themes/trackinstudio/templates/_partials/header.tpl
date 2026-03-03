@@ -12,7 +12,7 @@
 {/block}
 
 {block name='header_nav'}
-  <nav class="{$headerTopName}">
+  <nav class="{$headerTopName} bg-black">
     <div class="container-md">
       <div class="{$headerTopName}-desktop d-none d-md-flex row">
         <div class="{$headerTopName}__left col-md-5">

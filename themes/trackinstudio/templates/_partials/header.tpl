@@ -84,7 +84,7 @@
 
   <div class="search__offcanvas js-search-offcanvas offcanvas offcanvas-top h-auto" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1" id="searchCanvas" aria-labelledby="offcanvasTopLabel">
     <div class="offcanvas-header">
-      <div id="_mobile_search" class="search__container"></div>
+      <div id="_mobile_search" class="search__container">{hook h='displaySearch'}</div>
       <button type="button" class="btn-close text-reset ms-1" data-bs-dismiss="offcanvas" aria-label="Close">{l s='Cancel' d='Shop.Theme.Global'}</button>
     </div>
   </div>

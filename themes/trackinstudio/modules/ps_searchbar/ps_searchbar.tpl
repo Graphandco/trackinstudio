@@ -23,8 +23,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 
-<div id="_desktop_search" class="d-none">
-  <div id="search_widget" class="search-widgets js-search-widget" data-search-controller-url="{$search_controller_url}">
+{* Pas de wrapper _desktop_search : le contenu est rendu directement dans _mobile_search via displaySearch pour l'offcanvas *}
+<div id="search_widget" class="search-widgets js-search-widget" data-search-controller-url="{$search_controller_url}">
     <form method="get" action="{$search_controller_url}">
       <input type="hidden" name="controller" value="search">
       <i class="material-icons search js-search-icon" aria-hidden="true">search</i>
@@ -36,7 +36,6 @@
       <ul class="search-widgets__results js-search-results">
       </ul>
     </div>
-  </div>
 </div>
 
 <template id="search-products" class="js-search-template">

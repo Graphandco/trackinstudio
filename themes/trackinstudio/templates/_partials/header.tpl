@@ -13,32 +13,31 @@
 
 {block name='header_nav'}
     <nav class="{$headerTopName} bg-black">
-        <div class="container-md">
-            <div class="{$headerTopName}-desktop d-none d-md-flex row">
-                <div class="{$headerTopName}__left col-md-5">
-                    {hook h='displayNav1'}
-                </div>
-
-                <div class="{$headerTopName}__right col-md-7 d-flex align-items-center">
-                    <div class="search__icon d-flex">
-                        <div class="header-block d-flex align-items-center">
-                            <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#searchCanvas" aria-controls="searchCanvas"
-                                aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
-                                <span class="material-icons header-block__icon">search</span>
-                            </a>
-                        </div>
-                    </div>
-                    {hook h='displayNav2'}
-                </div>
+        <div class="container {$headerTopName}-desktop d-none d-md-flex row">
+            <div class="{$headerTopName}__left col-md-5">
+                {hook h='displayNav1'}
             </div>
+
+            <div class="{$headerTopName}__right col-md-7 d-flex align-items-center">
+                <div class="search__icon d-flex">
+                    <div class="header-block d-flex align-items-center">
+                        <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#searchCanvas" aria-controls="searchCanvas"
+                            aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
+                            <span class="material-icons header-block__icon">search</span>
+                        </a>
+                    </div>
+                </div>
+                {hook h='displayNav2'}
+            </div>
+        </div>
         </div>
     </nav>
 {/block}
 
 {block name='header_bottom'}
     <div class="{$headerBottomName}">
-        <div class="container-md {$headerBottomName}__container">
+        <div class="container {$headerBottomName}__container">
             <div class="d-flex flex-nowrap align-items-stretch justify-content-between gx-2 {$headerBottomName}__row">
                 <div class="d-flex align-items-center logo ms-lg-0 ms-2 me-lg-0">
                     {if $shop.logo_details}

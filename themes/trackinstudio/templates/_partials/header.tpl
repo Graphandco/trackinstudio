@@ -19,7 +19,14 @@
           {hook h='displayNav1'}
         </div>
 
-        <div class="{$headerTopName}__right col-md-7">
+        <div class="{$headerTopName}__right col-md-7 d-flex align-items-center">
+          <div class="search__icon d-flex">
+            <div class="header-block d-flex align-items-center">
+              <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas" data-bs-target="#searchCanvas" aria-controls="searchCanvas" aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
+                <span class="material-icons header-block__icon">search</span>
+              </a>
+            </div>
+          </div>
           {hook h='displayNav2'}
         </div>
       </div>
@@ -39,23 +46,15 @@
           {/if}
         </div>
 
-        <div class="search__mobile d-md-none d-flex col-auto">
+        {hook h='displayTop'}
 
+        <div class="search__icon d-md-none d-flex col-auto">
           <div class="header-block d-flex align-items-center">
             <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas" data-bs-target="#searchCanvas" aria-controls="searchCanvas" aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
               <span class="material-icons header-block__icon">search</span>
             </a>
           </div>
-
-          <div class="search__offcanvas js-search-offcanvas offcanvas offcanvas-top h-auto" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1" id="searchCanvas" aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header">
-              <div id="_mobile_search" class="search__container"></div>
-              <button type="button" class="btn-close text-reset ms-1" data-bs-dismiss="offcanvas" aria-label="Close">{l s='Cancel' d='Shop.Theme.Global'}</button>
-            </div>
-          </div>
         </div>
-
-        {hook h='displayTop'}
 
         <div id="_mobile_user_info" class="d-md-none d-flex col-auto">
           {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
@@ -78,7 +77,15 @@
           </div>
           {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
         </div>
+        
       </div>
+    </div>
+  </div>
+
+  <div class="search__offcanvas js-search-offcanvas offcanvas offcanvas-top h-auto" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1" id="searchCanvas" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <div id="_mobile_search" class="search__container"></div>
+      <button type="button" class="btn-close text-reset ms-1" data-bs-dismiss="offcanvas" aria-label="Close">{l s='Cancel' d='Shop.Theme.Global'}</button>
     </div>
   </div>
 

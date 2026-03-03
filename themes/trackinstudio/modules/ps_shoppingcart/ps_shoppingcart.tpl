@@ -37,7 +37,7 @@
     {/if}
 
     <i class="material-icons header-block__icon" aria-hidden="true">shopping_cart</i>
-    <span class="d-none d-md-flex header-block__title">{l s='Cart' d='Shop.Theme.Checkout'}</span>
+    {* <span class="d-none d-md-flex header-block__title">{l s='Cart' d='Shop.Theme.Checkout'}</span> *}
     <span class="header-block__badge">{$cart.products_count}</span>
 
     {if $cart.products_count > 0}

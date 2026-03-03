@@ -104,12 +104,12 @@
   {/if}
 {/function}
 
-<div class="main-menu col-xl col-auto d-flex align-items-center">
-  <div class="d-none d-xl-block position-static js-menu-desktop">
+<div class="main-menu d-flex align-items-center">
+  <div class="d-none d-md-block position-static js-menu-desktop">
     {desktopMenu nodes=$menu.children}
   </div>
 
-  <div class="header-block d-xl-none">
+  <div class="header-block d-md-none">
     <a
       class="header-block__action-btn"
       href="#"

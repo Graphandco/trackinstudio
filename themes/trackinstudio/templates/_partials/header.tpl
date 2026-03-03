@@ -37,8 +37,8 @@
 {block name='header_bottom'}
   <div class="{$headerBottomName}">
     <div class="container-md {$headerBottomName}__container">
-      <div class="row gx-2 align-items-stretch {$headerBottomName}__row">
-        <div class="d-flex align-items-center col-auto logo order-xl-1 ms-lg-0 ms-2 me-lg-0 me-auto">
+      <div class="d-flex flex-nowrap align-items-stretch justify-content-between gx-2 {$headerBottomName}__row">
+        <div class="d-flex align-items-center logo ms-lg-0 ms-2 me-lg-0">
           {if $shop.logo_details}
             {if $page.page_name == 'index'}<h1 class="{$headerBottomName}__h1 mb-0">{/if}
               {renderLogo}
@@ -46,38 +46,39 @@
           {/if}
         </div>
 
-        {hook h='displayTop'}
-
-        <div class="search__icon d-md-none d-flex col-auto">
-          <div class="header-block d-flex align-items-center">
-            <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas" data-bs-target="#searchCanvas" aria-controls="searchCanvas" aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
-              <span class="material-icons header-block__icon">search</span>
-            </a>
+        <div class="d-flex flex-nowrap align-items-center gx-2 header-bottom__actions">
+          <div class="search__icon d-md-none d-flex">
+            <div class="header-block d-flex align-items-center">
+              <a class="header-block__action-btn" href="#" role="button" data-bs-toggle="offcanvas" data-bs-target="#searchCanvas" aria-controls="searchCanvas" aria-label="{l s='Show search bar' d='Shop.Theme.Global'}">
+                <span class="material-icons header-block__icon">search</span>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div id="_mobile_user_info" class="d-md-none d-flex col-auto">
-          {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
-          <div class="header-block">
-            <span class="header-block__action-btn">
-              <i class="material-icons header-block__icon" aria-hidden="true">&#xE7FD;</i>
-              <span class="d-none d-md-inline header-block__title">{l s='Sign in' d='Shop.Theme.Actions'}</span>
-            </span>
+          <div id="_mobile_user_info" class="d-md-none d-flex">
+            {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
+            <div class="header-block">
+              <span class="header-block__action-btn">
+                <i class="material-icons header-block__icon" aria-hidden="true">&#xE7FD;</i>
+                <span class="d-none d-md-inline header-block__title">{l s='Sign in' d='Shop.Theme.Actions'}</span>
+              </span>
+            </div>
+            {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
           </div>
-          {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
-        </div>
 
-        <div id="_mobile_cart" class="d-md-none col-auto d-flex">
-          {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
-          <div class="header-block d-flex align-items-center">
-            <span class="header-block__action-btn">
-              <i class="material-icons header-block__icon" aria-hidden="true">shopping_cart</i>
-              <span class="header-block__badge">{$cart.products_count}</span>
-            </span>
+          <div id="_mobile_cart" class="d-md-none d-flex">
+            {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
+            <div class="header-block d-flex align-items-center">
+              <span class="header-block__action-btn">
+                <i class="material-icons header-block__icon" aria-hidden="true">shopping_cart</i>
+                <span class="header-block__badge">{$cart.products_count}</span>
+              </span>
+            </div>
+            {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
           </div>
-          {* JUST PLACEHOLDER FOR RESPONSIVE COMPONENT TO LOAD REAL ONE *}
+
+          {hook h='displayTop'}
         </div>
-        
       </div>
     </div>
   </div>

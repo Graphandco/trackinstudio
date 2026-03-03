@@ -110,44 +110,42 @@
   </div>
 
   <div class="header-block d-md-none">
-    <a
-      class="header-block__action-btn"
-      href="#"
-      role="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#mobileMenu"
-      aria-controls="mobileMenu"
+    <button
+      class="header-block__action-btn js-menu-sidebar-trigger"
+      type="button"
+      aria-controls="menu-sidebar"
+      aria-expanded="false"
     >
       <span class="material-icons header-block__icon">menu</span>
-    </a>
+    </button>
   </div>
 </div>
 
-<div
-  class="main-menu__offcanvas offcanvas offcanvas-start js-menu-canvas"
-  tabindex="-1"
-  id="mobileMenu"
-  aria-labelledby="mobileMenuLabel"
->
-  <div class="offcanvas-header">
-    <div class="main-menu__back-button">
-      <button class="btn btn-unstyle d-none js-back-button" type="button">
-        <span class="material-icons rtl-flip">chevron_left</span>
-        <span class="js-menu-back-title">{l s='All' d='Shop.Theme.Global'}</span>
-      </button>
-    </div>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
+<div id="menu-sidebar" class="menu-sidebar" aria-hidden="true">
+  <div class="menu-sidebar__backdrop" data-menu-sidebar-close></div>
+  <div class="menu-sidebar__panel">
+    <div class="menu-sidebar__content">
+      <div class="offcanvas-header main-menu__offcanvas-header">
+        <div class="main-menu__back-button">
+          <button class="btn btn-unstyle d-none js-back-button" type="button">
+            <span class="material-icons rtl-flip">chevron_left</span>
+            <span class="js-menu-back-title">{l s='All' d='Shop.Theme.Global'}</span>
+          </button>
+        </div>
+        <button type="button" class="btn-close text-reset" data-menu-sidebar-close aria-label="Close"></button>
+      </div>
 
-  <div class="main-menu__mobile">
-    {mobileMenu nodes=$menu.children}
-  </div>
+      <div class="main-menu__mobile">
+        {mobileMenu nodes=$menu.children}
+      </div>
 
-  <div class="main-menu__additionnals offcanvas-body">
-    <div class="main-menu__selects row">
-      <div id="_mobile_currency_selector" class="col-auto"></div>
-      <div id="_mobile_language_selector" class="col-auto"></div>
+      <div class="main-menu__additionnals offcanvas-body">
+        <div class="main-menu__selects row">
+          <div id="_mobile_currency_selector" class="col-auto"></div>
+          <div id="_mobile_language_selector" class="col-auto"></div>
+        </div>
+        <div id="_mobile_contact_link"></div>
+      </div>
     </div>
-    <div id="_mobile_contact_link"></div>
   </div>
 </div>

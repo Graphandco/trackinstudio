@@ -15,7 +15,7 @@
         <div class="cart-sidebar__body">
             <div class="cart-sidebar__empty js-cart-sidebar-empty"
                 {if isset($cart) && $cart.products_count > 0}style="display:none;" {/if}>
-                <p>{l s='Your cart is empty' d='Shop.Theme.Checkout'}</p>
+                <p>{l s='Votre panier est vide' d='Shop.Theme.Checkout'}</p>
             </div>
             <div class="cart-sidebar__products js-cart-sidebar-products"
                 {if !isset($cart) || $cart.products_count == 0}style="display:none;" {/if}>
@@ -81,9 +81,15 @@
             </div>
             <div class="cart-sidebar__actions">
                 <a href="{$link->getPageLink('cart', true, null, ['action' => 'show'])|escape:'html'}"
-                    class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">{l s='Voir le panier' d='Shop.Theme.Checkout'}</a>
+                    class="btn btn-outline-primary cart-sidebar__btn-cart js-cart-sidebar-btn-cart">
+                    <i class="material-icons" aria-hidden="true">shopping_cart</i>
+                    {l s='Voir le panier' d='Shop.Theme.Checkout'}
+                </a>
                 <a href="{$urls.pages.order}"
-                    class="btn btn-primary cart-sidebar__btn-checkout js-cart-sidebar-btn-checkout">{l s='Proceed to checkout' d='Shop.Theme.Actions'}</a>
+                    class="btn btn-primary cart-sidebar__btn-checkout js-cart-sidebar-btn-checkout">
+                    <i class="material-icons" aria-hidden="true">credit_card</i>
+                    {l s='Proceed to checkout' d='Shop.Theme.Actions'}
+                </a>
             </div>
         </div>
     </div>

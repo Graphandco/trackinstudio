@@ -41,9 +41,7 @@
             <div class="d-flex flex-nowrap align-items-stretch justify-content-between gx-2 {$headerBottomName}__row">
                 <div class="d-flex align-items-center logo ms-lg-0 ms-2 me-lg-0">
                     {if $shop.logo_details}
-                        {if $page.page_name == 'index'}<h1 class="{$headerBottomName}__h1 mb-0">{/if}
-                            {renderLogo}
-                            {if $page.page_name == 'index'}</h1>{/if}
+                        {renderLogo}
                     {/if}
                 </div>
 

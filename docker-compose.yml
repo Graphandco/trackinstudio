@@ -15,7 +15,7 @@ services:
          PS_LANGUAGE: fr
          PS_DEV_MODE: ${PS_DEV_MODE}
          PS_ENABLE_SSL: 1
-         PS_TRUSTED_PROXIES: "private_ranges"
+         PS_TRUSTED_PROXIES: 'private_ranges'
          DB_SERVER: ${DB_SERVER}
          DB_NAME: ${DB_NAME}
          DB_USER: ${DB_USER}
@@ -26,8 +26,8 @@ services:
       volumes:
          # Bind mounts : code custom (modifiable depuis l'hôte)
          - type: bind
-           source: ./modules/trackinstudio_module
-           target: /var/www/html/modules/trackinstudio_module
+           source: ./modules/trackinstudio_contentblocks
+           target: /var/www/html/modules/trackinstudio_contentblocks
          - type: bind
            source: ./themes/trackinstudio
            target: /var/www/html/themes/trackinstudio

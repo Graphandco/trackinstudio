@@ -14,6 +14,7 @@
 /modules/*
 !/modules/trackinstudio*
 !/modules/trackinstudio*/*
+/modules/trackinstudio_contentblocks/img
 
 # themes : tout ignorer sauf trackinstudio
 /themes/*

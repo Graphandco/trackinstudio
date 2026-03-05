@@ -5,6 +5,7 @@ Module PrestaShop pour la gestion de blocs de contenu avec titre, description fo
 ## Fonctionnalités
 
 - Gestion complète des blocs depuis le backoffice
+- **Bouton configurable** : lien vers une page CMS, catégorie ou fiche produit avec texte personnalisable par langue
 - Support multilingue pour les titres et descriptions
 - Éditeur WYSIWYG (TinyMCE) natif de PrestaShop pour formater les descriptions
 - Upload et gestion d'images pour chaque bloc

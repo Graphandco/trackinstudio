@@ -9,7 +9,7 @@ class Trackinstudio_Contentblocks extends Module
     public function __construct()
     {
         $this->name = 'trackinstudio_contentblocks';
-        $this->version = '1.0.0';
+        $this->version = '1.1.0';
         $this->author = 'Graph and Co';
         $this->tab = 'others';
         $this->need_instance = 0;
@@ -26,6 +26,7 @@ class Trackinstudio_Contentblocks extends Module
     public function install(): bool
     {
         include(dirname(__FILE__).'/sql/install.php');
+        Configuration::updateValue('TRACKINSTUDIO_CONTENTBLOCKS_VERSION', $this->version);
 
         return parent::install()
             && $this->registerHook('displayContentBlock')
@@ -36,12 +37,23 @@ class Trackinstudio_Contentblocks extends Module
     {
         $this->deleteAllImages();
         include(dirname(__FILE__).'/sql/uninstall.php');
+        Configuration::deleteByName('TRACKINSTUDIO_CONTENTBLOCKS_VERSION');
 
         return parent::uninstall();
     }
 
+    private function runUpgrade()
+    {
+        $installed_version = Configuration::get('TRACKINSTUDIO_CONTENTBLOCKS_VERSION');
+        if (version_compare($installed_version, '1.1.0', '<')) {
+            include(dirname(__FILE__).'/sql/upgrade-1.1.0.php');
+            Configuration::updateValue('TRACKINSTUDIO_CONTENTBLOCKS_VERSION', $this->version);
+        }
+    }
+
     public function getContent()
     {
+        $this->runUpgrade();
         $output = '';
 
         if (Tools::isSubmit('statustrackinstudio_contentblocks')) {
@@ -64,6 +76,8 @@ class Trackinstudio_Contentblocks extends Module
             $id_contentblock = (int)Tools::getValue('id_contentblock');
             $active = (int)Tools::getValue('active');
             $page = pSQL(Tools::getValue('page'));
+            $button_target_combo = pSQL(Tools::getValue('button_target'));
+            list($button_type, $button_target) = $this->parseButtonTargetCombo($button_target_combo);
             $languages = Language::getLanguages(false);
             $image_filename = '';
 
@@ -88,6 +102,8 @@ class Trackinstudio_Contentblocks extends Module
                         SET `active` = '.(int)$active.', 
                             `page` = \''.pSQL($page).'\', 
                             `image_filename` = \''.pSQL($image_filename).'\',
+                            `button_type` = \''.pSQL($button_type).'\',
+                            `button_target` = \''.pSQL($button_target).'\',
                             `date_upd` = NOW()
                         WHERE `id_contentblock` = '.(int)$id_contentblock;
                 if (!Db::getInstance()->execute($sql)) {
@@ -101,15 +117,17 @@ class Trackinstudio_Contentblocks extends Module
                                 WHERE `id_contentblock` = '.(int)$id_contentblock.' AND `id_lang` = '.(int)$language['id_lang'];
                         $existing = Db::getInstance()->getRow($sql);
 
+                        $button_label = Tools::getValue('button_label_'.$language['id_lang']);
                         if ($existing) {
                             $sql = 'UPDATE `'._DB_PREFIX_.'trackinstudio_contentblocks_lang` 
                                     SET `title` = \''.pSQL($title, true).'\',
-                                        `description` = \''.pSQL($description, true).'\'
+                                        `description` = \''.pSQL($description, true).'\',
+                                        `button_label` = \''.pSQL($button_label, true).'\'
                                     WHERE `id_contentblock` = '.(int)$id_contentblock.' AND `id_lang` = '.(int)$language['id_lang'];
                         } else {
                             $sql = 'INSERT INTO `'._DB_PREFIX_.'trackinstudio_contentblocks_lang` 
-                                    (`id_contentblock`, `id_lang`, `title`, `description`) 
-                                    VALUES ('.(int)$id_contentblock.', '.(int)$language['id_lang'].', \''.pSQL($title, true).'\', \''.pSQL($description, true).'\')';
+                                    (`id_contentblock`, `id_lang`, `title`, `description`, `button_label`) 
+                                    VALUES ('.(int)$id_contentblock.', '.(int)$language['id_lang'].', \''.pSQL($title, true).'\', \''.pSQL($description, true).'\', \''.pSQL($button_label, true).'\')';
                         }
                         Db::getInstance()->execute($sql);
                     }
@@ -117,8 +135,8 @@ class Trackinstudio_Contentblocks extends Module
                 }
             } else {
                 $sql = 'INSERT INTO `'._DB_PREFIX_.'trackinstudio_contentblocks` 
-                        (`page`, `active`, `image_filename`, `date_add`, `date_upd`) 
-                        VALUES (\''.pSQL($page).'\', '.(int)$active.', \''.pSQL($image_filename).'\', NOW(), NOW())';
+                        (`page`, `active`, `image_filename`, `button_type`, `button_target`, `date_add`, `date_upd`) 
+                        VALUES (\''.pSQL($page).'\', '.(int)$active.', \''.pSQL($image_filename).'\', \''.pSQL($button_type).'\', \''.pSQL($button_target).'\', NOW(), NOW())';
                 if (!Db::getInstance()->execute($sql)) {
                     $output .= $this->displayError($this->l('Erreur lors de l\'ajout du bloc.'));
                 } else {
@@ -132,10 +150,11 @@ class Trackinstudio_Contentblocks extends Module
                     foreach ($languages as $language) {
                         $title = Tools::getValue('title_'.$language['id_lang']);
                         $description = Tools::getValue('description_'.$language['id_lang']);
+                        $button_label = Tools::getValue('button_label_'.$language['id_lang']);
 
                         $sql = 'INSERT INTO `'._DB_PREFIX_.'trackinstudio_contentblocks_lang` 
-                                (`id_contentblock`, `id_lang`, `title`, `description`) 
-                                VALUES ('.(int)$id_contentblock.', '.(int)$language['id_lang'].', \''.pSQL($title, true).'\', \''.pSQL($description, true).'\')';
+                                (`id_contentblock`, `id_lang`, `title`, `description`, `button_label`) 
+                                VALUES ('.(int)$id_contentblock.', '.(int)$language['id_lang'].', \''.pSQL($title, true).'\', \''.pSQL($description, true).'\', \''.pSQL($button_label, true).'\')';
                         Db::getInstance()->execute($sql);
                     }
                     $output .= $this->displayConfirmation($this->l('Bloc ajouté avec succès.'));
@@ -185,6 +204,12 @@ class Trackinstudio_Contentblocks extends Module
 
         $block['title'] = $translations['title'];
         $block['description'] = $translations['description'];
+        $block['button_label'] = $translations['button_label'] ?? '';
+        $block['button_url'] = $this->buildButtonUrl(
+            $block['button_type'] ?? '',
+            $block['button_target'] ?? '',
+            $id_lang
+        );
 
         $this->context->smarty->assign([
             'block' => $block,
@@ -210,7 +235,7 @@ class Trackinstudio_Contentblocks extends Module
     {
         $id_lang = $this->context->language->id;
 
-        $sql = 'SELECT b.*, bl.`title`, bl.`description` 
+        $sql = 'SELECT b.*, bl.`title`, bl.`description`, bl.`button_label` 
                 FROM `'._DB_PREFIX_.'trackinstudio_contentblocks` b
                 LEFT JOIN `'._DB_PREFIX_.'trackinstudio_contentblocks_lang` bl ON (b.`id_contentblock` = bl.`id_contentblock` AND bl.`id_lang` = '.(int)$id_lang.')
                 WHERE b.`active` = 1 AND b.`page` = \''.pSQL($page).'\'
@@ -225,6 +250,14 @@ class Trackinstudio_Contentblocks extends Module
         $blocks = array_filter($blocks, function($block) {
             return !empty($block['title']);
         });
+
+        foreach ($blocks as &$block) {
+            $block['button_url'] = $this->buildButtonUrl(
+                $block['button_type'] ?? '',
+                $block['button_target'] ?? '',
+                $id_lang
+            );
+        }
 
         $this->context->smarty->assign([
             'blocks' => $blocks,
@@ -322,6 +355,9 @@ class Trackinstudio_Contentblocks extends Module
             'id_contentblock' => $id_contentblock,
             'active' => $block_data ? $block_data['active'] : 1,
             'page' => $block_data ? $block_data['page'] : '',
+            'button_target' => $block_data && !empty($block_data['button_type']) && $block_data['button_target'] !== ''
+                ? $block_data['button_type'] . '_' . $block_data['button_target']
+                : '',
         ];
 
         foreach ($languages as $language) {
@@ -331,7 +367,12 @@ class Trackinstudio_Contentblocks extends Module
             $default_values['description'][$language['id_lang']] = $block_data && isset($block_data['translations'][$language['id_lang']]) 
                 ? $block_data['translations'][$language['id_lang']]['description'] 
                 : '';
+            $default_values['button_label'][$language['id_lang']] = $block_data && isset($block_data['translations'][$language['id_lang']]) 
+                ? ($block_data['translations'][$language['id_lang']]['button_label'] ?? '') 
+                : '';
         }
+
+        $button_options = $this->getButtonTargetOptions($default_language);
 
         $image_url = '';
         if ($block_data && !empty($block_data['image_filename'])) {
@@ -401,6 +442,20 @@ class Trackinstudio_Contentblocks extends Module
                         'autoload_rte' => true,
                         'rows' => 10,
                         'cols' => 100,
+                    ],
+                    [
+                        'type' => 'select',
+                        'label' => $this->l('Bouton - Cible du lien'),
+                        'name' => 'button_target',
+                        'desc' => $this->l('Sélectionnez une page, catégorie ou fiche produit pour le bouton (optionnel).'),
+                        'options' => $button_options,
+                    ],
+                    [
+                        'type' => 'text',
+                        'label' => $this->l('Texte du bouton'),
+                        'name' => 'button_label',
+                        'lang' => true,
+                        'desc' => $this->l('Texte affiché sur le bouton (par langue).'),
                     ],
                 ],
                 'submit' => [
@@ -545,10 +600,109 @@ class Trackinstudio_Contentblocks extends Module
             $result[$translation['id_lang']] = [
                 'title' => $translation['title'],
                 'description' => $translation['description'],
+                'button_label' => isset($translation['button_label']) ? $translation['button_label'] : '',
             ];
         }
 
         return $result;
+    }
+
+    private function parseButtonTargetCombo($combo)
+    {
+        if (empty($combo) || strpos($combo, '_') === false) {
+            return ['', ''];
+        }
+        $parts = explode('_', $combo, 2);
+        return [$parts[0], $parts[1]];
+    }
+
+    private function getButtonTargetOptions($id_lang)
+    {
+        $options = [['id' => '', 'name' => $this->l('-- Aucun bouton --')]];
+        $prefix_page = $this->l('[Page] ');
+        $prefix_cat = $this->l('[Catégorie] ');
+        $prefix_prod = $this->l('[Produit] ');
+
+        if (class_exists('CMS')) {
+            $sql = 'SELECT c.id_cms, l.meta_title FROM `'._DB_PREFIX_.'cms` c
+                    INNER JOIN `'._DB_PREFIX_.'cms_lang` l ON c.id_cms = l.id_cms AND l.id_lang = '.(int)$id_lang.'
+                    WHERE c.active = 1 ORDER BY l.meta_title ASC';
+            $cms_pages = Db::getInstance()->executeS($sql);
+            if ($cms_pages) {
+                foreach ($cms_pages as $row) {
+                    $options[] = ['id' => 'page_'.(int)$row['id_cms'], 'name' => $prefix_page.$row['meta_title']];
+                }
+            }
+        }
+
+        $system_pages = [
+            'contact' => $this->l('Contact'),
+            'cart' => $this->l('Panier'),
+            'my-account' => $this->l('Mon compte'),
+            'sitemap' => $this->l('Plan du site'),
+            'index' => $this->l('Accueil'),
+        ];
+        foreach ($system_pages as $controller => $label) {
+            $options[] = ['id' => 'page_'.$controller, 'name' => $prefix_page.$label];
+        }
+
+        $sql_cat = 'SELECT c.id_category, cl.name FROM `'._DB_PREFIX_.'category` c
+                    INNER JOIN `'._DB_PREFIX_.'category_lang` cl ON c.id_category = cl.id_category AND cl.id_lang = '.(int)$id_lang.'
+                    WHERE c.active = 1 AND c.id_category NOT IN (1, 2) ORDER BY cl.name ASC LIMIT 300';
+        $categories = Db::getInstance()->executeS($sql_cat);
+        if ($categories) {
+            foreach ($categories as $cat) {
+                $options[] = ['id' => 'category_'.(int)$cat['id_category'], 'name' => $prefix_cat.$cat['name']];
+            }
+        }
+
+        $sql = 'SELECT p.id_product, pl.name FROM `'._DB_PREFIX_.'product` p
+                INNER JOIN `'._DB_PREFIX_.'product_lang` pl ON p.id_product = pl.id_product AND pl.id_lang = '.(int)$id_lang.'
+                WHERE p.active = 1 ORDER BY pl.name ASC LIMIT 300';
+        $products = Db::getInstance()->executeS($sql);
+        if ($products) {
+            foreach ($products as $prod) {
+                $options[] = ['id' => 'product_'.(int)$prod['id_product'], 'name' => $prefix_prod.$prod['name']];
+            }
+        }
+
+        return [
+            'query' => $options,
+            'id' => 'id',
+            'name' => 'name',
+        ];
+    }
+
+    private function buildButtonUrl($button_type, $button_target, $id_lang)
+    {
+        if (empty($button_type) || $button_target === '' || $button_target === null) {
+            return '';
+        }
+        $link = $this->context->link;
+        try {
+            if ($button_type === 'page') {
+                if (is_numeric($button_target)) {
+                    $cms = new CMS((int)$button_target, $id_lang);
+                    if (Validate::isLoadedObject($cms)) {
+                        return $link->getCMSLink($cms, null, null, $id_lang);
+                    }
+                } else {
+                    return $link->getPageLink($button_target, true, $id_lang, [], false);
+                }
+            } elseif ($button_type === 'category') {
+                $category = new Category((int)$button_target, $id_lang);
+                if (Validate::isLoadedObject($category)) {
+                    return $link->getCategoryLink($category, null, $id_lang);
+                }
+            } elseif ($button_type === 'product') {
+                $product = new Product((int)$button_target, false, $id_lang);
+                if (Validate::isLoadedObject($product)) {
+                    return $link->getProductLink($product, null, null, null, false, false, $id_lang);
+                }
+            }
+        } catch (Exception $e) {
+        }
+        return '';
     }
 
     private function deleteBlock($id_contentblock)

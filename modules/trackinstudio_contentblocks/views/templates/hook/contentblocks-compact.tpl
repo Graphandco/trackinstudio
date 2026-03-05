@@ -30,6 +30,11 @@
                     <div class="contentblock-description">
                         {$block.description nofilter}
                     </div>
+                    {if !empty($block.button_url) && !empty($block.button_label)}
+                        <a href="{$block.button_url|escape:'html':'UTF-8'}" class="btn btn-primary contentblock-btn">
+                            {$block.button_label|escape:'html':'UTF-8'}
+                        </a>
+                    {/if}
                 </div>
             </div>
         </div>
@@ -51,6 +56,11 @@
                         <div class="contentblock-description">
                             {$block.description nofilter}
                         </div>
+                        {if !empty($block.button_url) && !empty($block.button_label)}
+                            <a href="{$block.button_url|escape:'html':'UTF-8'}" class="btn btn-primary contentblock-btn">
+                                {$block.button_label|escape:'html':'UTF-8'}
+                            </a>
+                        {/if}
                     </div>
                 </div>
             </div>

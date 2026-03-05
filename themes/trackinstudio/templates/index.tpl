@@ -39,7 +39,8 @@
                     </div>
                 </section>
                 {hook h='displayContentBlock' id_contentblock=1}
-                {hook h='displayContentBlock' id_contentblock=1 template='contentblocks-compact'}
+                {hook h='displayContentBlock' id_contentblock=2}
+                {* {hook h='displayContentBlock' id_contentblock=1 template='contentblocks-compact'} *}
 
                 {block name='page_header_container'}
                     {block name='page_title' hide}

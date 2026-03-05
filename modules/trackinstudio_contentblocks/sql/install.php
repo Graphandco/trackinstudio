@@ -19,6 +19,8 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'trackinstudio_contentblocks
     `page` varchar(255) NOT NULL DEFAULT \'\',
     `active` tinyint(1) unsigned NOT NULL DEFAULT 1,
     `image_filename` varchar(255) NOT NULL,
+    `button_type` varchar(20) NOT NULL DEFAULT \'\',
+    `button_target` varchar(255) NOT NULL DEFAULT \'\',
     `date_add` datetime NOT NULL,
     `date_upd` datetime NOT NULL,
     PRIMARY KEY (`id_contentblock`),
@@ -31,6 +33,7 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'trackinstudio_contentblocks
     `id_lang` int(10) unsigned NOT NULL,
     `title` varchar(255) NOT NULL,
     `description` text,
+    `button_label` varchar(255) NOT NULL DEFAULT \'\',
     PRIMARY KEY (`id_contentblock`, `id_lang`)
 ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=UTF8;';
 

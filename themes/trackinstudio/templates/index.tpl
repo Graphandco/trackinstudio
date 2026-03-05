@@ -38,9 +38,8 @@
                         </div>
                     </div>
                 </section>
-                {* Préférer slug= pour cohérence dev/prod. Après upgrade, bloc ID 1 = slug block-1 *}
-                {hook h='displayContentBlock' slug='block-1'}
-                {hook h='displayContentBlock' slug='block-2'}
+
+                {hook h='displayContentBlock' slug='home-studio'}
 
                 {block name='page_header_container'}
                     {block name='page_title' hide}

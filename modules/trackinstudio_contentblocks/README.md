@@ -10,7 +10,8 @@ Module PrestaShop pour la gestion de blocs de contenu avec titre, description fo
 - Éditeur WYSIWYG (TinyMCE) natif de PrestaShop pour formater les descriptions
 - Upload et gestion d'images pour chaque bloc
 - Champ **page** (texte) pour organiser les blocs par page
-- **Affichage par ID** : possibilité d'afficher n'importe quel bloc en l'appelant avec son ID
+- **Slug** : identifiant stable pour cohérence dev/prod (ne pas modifier après création)
+- **Affichage par slug ou ID** : possibilité d'afficher un bloc par son slug (recommandé) ou son ID
 - **Templates multiples** : création de templates alternatifs pour différents designs
 - Activation/désactivation des blocs
 
@@ -25,21 +26,29 @@ Module PrestaShop pour la gestion de blocs de contenu avec titre, description fo
 
 Les styles sont gérés dans le thème, pas dans le module. Le fichier `themes/trackinstudio/src/scss/modules/_contentblocks.scss` contient les styles par défaut.
 
-## Affichage d'un bloc par ID
+## Affichage d'un bloc
 
-### En PHP (depuis un contrôleur)
+### Par slug (recommandé, cohérent entre dev et prod)
 
 ```php
 $module = Module::getInstanceByName('trackinstudio_contentblocks');
-echo $module->renderBlockById(1);                    // Template par défaut
-echo $module->renderBlockById(1, 'contentblocks-compact');  // Template alternatif
+echo $module->renderBlockBySlug('hero-accueil');
+echo $module->renderBlockBySlug('hero-accueil', 'contentblocks-compact');
 ```
 
-### Via le hook dans un template Smarty
+```smarty
+{hook h='displayContentBlock' slug='hero-accueil'}
+{hook h='displayContentBlock' slug='hero-accueil' template='contentblocks-compact'}
+```
+
+### Par ID (toujours supporté)
+
+```php
+echo $module->renderBlockById(1);
+```
 
 ```smarty
 {hook h='displayContentBlock' id_contentblock=1}
-{hook h='displayContentBlock' id_contentblock=5 template='contentblocks-compact'}
 ```
 
 ### Blocs d'une page
@@ -81,7 +90,7 @@ trackinstudio_contentblocks/
 
 ## Base de données
 
-- `ps_trackinstudio_contentblocks` : table principale (id_contentblock, page, active, image_filename)
+- `ps_trackinstudio_contentblocks` : table principale (id_contentblock, slug, page, active, image_filename)
 - `ps_trackinstudio_contentblocks_lang` : traductions
 
 ## Auteur

@@ -9,7 +9,7 @@ class Trackinstudio_Contentblocks extends Module
     public function __construct()
     {
         $this->name = 'trackinstudio_contentblocks';
-        $this->version = '1.1.0';
+        $this->version = '1.2.0';
         $this->author = 'Graph and Co';
         $this->tab = 'others';
         $this->need_instance = 0;
@@ -49,6 +49,10 @@ class Trackinstudio_Contentblocks extends Module
             include(dirname(__FILE__).'/sql/upgrade-1.1.0.php');
             Configuration::updateValue('TRACKINSTUDIO_CONTENTBLOCKS_VERSION', $this->version);
         }
+        if (version_compare($installed_version, '1.2.0', '<')) {
+            include(dirname(__FILE__).'/sql/upgrade-1.2.0.php');
+            Configuration::updateValue('TRACKINSTUDIO_CONTENTBLOCKS_VERSION', $this->version);
+        }
     }
 
     public function getContent()
@@ -76,6 +80,7 @@ class Trackinstudio_Contentblocks extends Module
             $id_contentblock = (int)Tools::getValue('id_contentblock');
             $active = (int)Tools::getValue('active');
             $page = pSQL(Tools::getValue('page'));
+            $slug = $this->slugify(Tools::getValue('slug'));
             $button_target_combo = pSQL(Tools::getValue('button_target'));
             list($button_type, $button_target) = $this->parseButtonTargetCombo($button_target_combo);
             $languages = Language::getLanguages(false);
@@ -134,9 +139,14 @@ class Trackinstudio_Contentblocks extends Module
                     $output .= $this->displayConfirmation($this->l('Bloc mis à jour avec succès.'));
                 }
             } else {
+                if (empty($slug)) {
+                    $output .= $this->displayError($this->l('Le slug est obligatoire pour un nouveau bloc.'));
+                } elseif ($this->slugExists($slug)) {
+                    $output .= $this->displayError($this->l('Ce slug est déjà utilisé par un autre bloc.'));
+                } else {
                 $sql = 'INSERT INTO `'._DB_PREFIX_.'trackinstudio_contentblocks` 
-                        (`page`, `active`, `image_filename`, `button_type`, `button_target`, `date_add`, `date_upd`) 
-                        VALUES (\''.pSQL($page).'\', '.(int)$active.', \''.pSQL($image_filename).'\', \''.pSQL($button_type).'\', \''.pSQL($button_target).'\', NOW(), NOW())';
+                        (`slug`, `page`, `active`, `image_filename`, `button_type`, `button_target`, `date_add`, `date_upd`) 
+                        VALUES (\''.pSQL($slug).'\', \''.pSQL($page).'\', '.(int)$active.', \''.pSQL($image_filename).'\', \''.pSQL($button_type).'\', \''.pSQL($button_target).'\', NOW(), NOW())';
                 if (!Db::getInstance()->execute($sql)) {
                     $output .= $this->displayError($this->l('Erreur lors de l\'ajout du bloc.'));
                 } else {
@@ -158,6 +168,7 @@ class Trackinstudio_Contentblocks extends Module
                         Db::getInstance()->execute($sql);
                     }
                     $output .= $this->displayConfirmation($this->l('Bloc ajouté avec succès.'));
+                }
                 }
             }
         }
@@ -225,6 +236,35 @@ class Trackinstudio_Contentblocks extends Module
     }
 
     /**
+     * Récupère un bloc par son slug (méthode publique)
+     */
+    public function getBlockBySlug($slug)
+    {
+        $slug = $this->slugify($slug);
+        if (empty($slug)) {
+            return false;
+        }
+        $sql = 'SELECT * FROM `'._DB_PREFIX_.'trackinstudio_contentblocks` WHERE `slug` = \''.pSQL($slug).'\'';
+        $block = Db::getInstance()->getRow($sql);
+        if ($block) {
+            $block['translations'] = $this->getBlockTranslations($block['id_contentblock']);
+        }
+        return $block;
+    }
+
+    /**
+     * Affiche un bloc par son slug (méthode publique pour appel direct)
+     */
+    public function renderBlockBySlug($slug, $template = 'contentblocks-default')
+    {
+        $block = $this->getBlockBySlug($slug);
+        if (!$block) {
+            return '';
+        }
+        return $this->renderBlockById($block['id_contentblock'], $template);
+    }
+
+    /**
      * Affiche les blocs d'une page donnée
      *
      * @param string $page Identifiant de la page
@@ -278,9 +318,9 @@ class Trackinstudio_Contentblocks extends Module
         $languages = Language::getLanguages(false);
 
         $fields_list = [
-            'id_contentblock' => [
-                'title' => $this->l('ID'),
-                'width' => 50,
+            'slug' => [
+                'title' => $this->l('Slug'),
+                'width' => 150,
                 'type' => 'text',
             ],
             'title' => [
@@ -331,6 +371,7 @@ class Trackinstudio_Contentblocks extends Module
 
             $list[] = [
                 'id_contentblock' => $block['id_contentblock'],
+                'slug' => isset($block['slug']) ? $block['slug'] : 'block-' . $block['id_contentblock'],
                 'title' => $title,
                 'page' => $block['page'],
                 'active' => $block['active'],
@@ -353,6 +394,7 @@ class Trackinstudio_Contentblocks extends Module
 
         $default_values = [
             'id_contentblock' => $id_contentblock,
+            'slug' => $block_data ? $block_data['slug'] : '',
             'active' => $block_data ? $block_data['active'] : 1,
             'page' => $block_data ? $block_data['page'] : '',
             'button_target' => $block_data && !empty($block_data['button_type']) && $block_data['button_target'] !== ''
@@ -394,6 +436,14 @@ class Trackinstudio_Contentblocks extends Module
                     [
                         'type' => 'hidden',
                         'name' => 'id_contentblock',
+                    ],
+                    [
+                        'type' => 'text',
+                        'label' => $this->l('Slug'),
+                        'name' => 'slug',
+                        'required' => ($id_contentblock <= 0),
+                        'disabled' => ($id_contentblock > 0),
+                        'desc' => $this->l('Identifiant stable pour les templates (ex: hero-accueil). Ne pas modifier après la création du bloc.'),
                     ],
                     [
                         'type' => 'text',
@@ -573,6 +623,27 @@ class Trackinstudio_Contentblocks extends Module
         }
 
         return $blocks;
+    }
+
+    /**
+     * Normalise une chaîne en slug (minuscules, tirets, alphanumérique)
+     */
+    private function slugify($string)
+    {
+        $slug = Tools::strtolower(trim($string));
+        $slug = preg_replace('/[^a-z0-9\-]/', '-', $slug);
+        $slug = preg_replace('/-+/', '-', $slug);
+        return trim($slug, '-');
+    }
+
+    /**
+     * Vérifie si un slug existe déjà (hors le bloc en cours d'édition)
+     */
+    private function slugExists($slug, $exclude_id = 0)
+    {
+        $sql = 'SELECT 1 FROM `'._DB_PREFIX_.'trackinstudio_contentblocks` 
+                WHERE `slug` = \''.pSQL($slug).'\' AND `id_contentblock` != '.(int)$exclude_id;
+        return (bool)Db::getInstance()->getValue($sql);
     }
 
     /**
@@ -761,12 +832,19 @@ class Trackinstudio_Contentblocks extends Module
      */
     public function hookDisplayContentBlock($params)
     {
+        $slug = isset($params['slug']) ? trim($params['slug']) : '';
         $id_contentblock = isset($params['id_contentblock']) ? (int)$params['id_contentblock'] : 0;
         if ($id_contentblock === 0) {
             $id_contentblock = (int)$this->context->smarty->getTemplateVars('id_contentblock');
         }
+        if (empty($slug)) {
+            $slug = $this->context->smarty->getTemplateVars('contentblock_slug');
+        }
         $template = isset($params['template']) ? $params['template'] : 'contentblocks-default';
 
+        if (!empty($slug)) {
+            return $this->renderBlockBySlug($slug, $template);
+        }
         if ($id_contentblock > 0) {
             return $this->renderBlockById($id_contentblock, $template);
         }

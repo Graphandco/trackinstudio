@@ -38,9 +38,9 @@
                         </div>
                     </div>
                 </section>
-                {hook h='displayContentBlock' id_contentblock=1}
-                {hook h='displayContentBlock' id_contentblock=2}
-                {* {hook h='displayContentBlock' id_contentblock=1 template='contentblocks-compact'} *}
+                {* Préférer slug= pour cohérence dev/prod. Après upgrade, bloc ID 1 = slug block-1 *}
+                {hook h='displayContentBlock' slug='block-1'}
+                {hook h='displayContentBlock' slug='block-2'}
 
                 {block name='page_header_container'}
                     {block name='page_title' hide}

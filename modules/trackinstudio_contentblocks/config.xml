@@ -2,8 +2,8 @@
 <module>
     <name>trackinstudio_contentblocks</name>
     <displayName><![CDATA[Trackinstudio - Blocs de contenu]]></displayName>
-    <version><![CDATA[1.1.0]]></version>
-    <description><![CDATA[Gestion de blocs de contenu avec titre, description et image. Bouton configurable (page, catégorie, produit).]]></description><![CDATA[Gestion de blocs de contenu avec titre, description et image. Affichage par ID avec templates multiples.]]></description>
+    <version><![CDATA[1.2.0]]></version>
+    <description><![CDATA[Gestion de blocs de contenu avec titre, description et image. Affichage par slug (cohérence dev/prod) ou ID, templates multiples.]]></description>
     <author><![CDATA[Graph and Co]]></author>
     <tab><![CDATA[others]]></tab>
     <confirmUninstall><![CDATA[Etes-vous sûr de vouloir désinstaller le module ?]]></confirmUninstall>

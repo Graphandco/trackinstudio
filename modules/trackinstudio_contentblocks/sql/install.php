@@ -16,6 +16,7 @@ $sql = array();
 
 $sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'trackinstudio_contentblocks` (
     `id_contentblock` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `slug` varchar(100) NOT NULL,
     `page` varchar(255) NOT NULL DEFAULT \'\',
     `active` tinyint(1) unsigned NOT NULL DEFAULT 1,
     `image_filename` varchar(255) NOT NULL,
@@ -24,6 +25,7 @@ $sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'trackinstudio_contentblocks
     `date_add` datetime NOT NULL,
     `date_upd` datetime NOT NULL,
     PRIMARY KEY (`id_contentblock`),
+    UNIQUE KEY `slug` (`slug`),
     KEY `page` (`page`),
     KEY `active` (`active`)
 ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=UTF8;';

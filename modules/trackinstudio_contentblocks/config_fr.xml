@@ -2,7 +2,7 @@
 <module>
     <name>trackinstudio_contentblocks</name>
     <displayName><![CDATA[Trackinstudio - Blocs de contenu]]></displayName>
-    <version><![CDATA[1.1.0]]></version>
+    <version><![CDATA[1.2.0]]></version>
     <description><![CDATA[Gestion de blocs de contenu avec titre, description et image. Affichage par ID avec templates multiples.]]></description>
     <author><![CDATA[Graph and Co]]></author>
     <tab><![CDATA[others]]></tab>
